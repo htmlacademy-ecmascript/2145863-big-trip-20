@@ -1,11 +1,22 @@
-import FilterView from './view/filter-view.js';
-import EventsListPresenter from './presenter/events-list-presenter.js';
+import './views/brief-view.js';
+import './views/add-view.js';
+import './views/filter-view.js';
+import './views/sort-view.js';
+import './views/list-view.js';
 
-import { render } from './render.js';
+/** @type {BriefView} */
+const briefView = document.querySelector('brief-view');
+/** @type {AddView} */
+const addView = document.querySelector('add-view');
+/** @type {FilterView} */
+const filterView = document.querySelector('filter-view');
+/** @type {SortView} */
+const sortView = document.querySelector('sort-view');
+/** @type {ListView} */
+const listView = document.querySelector('list-view');
 
-const siteHeaderElement = document.querySelector('.trip-controls__filters');
-const siteMainElement = document.querySelector('.trip-events');
-const eventsPresenter = new EventsListPresenter({eventsContainer: siteMainElement});
-
-render(new FilterView(), siteHeaderElement);
-eventsPresenter.init();
+briefView.render();
+addView.render();
+filterView.render();
+sortView.render();
+listView.render();
