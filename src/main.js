@@ -15,7 +15,6 @@ const sortView = document.querySelector('sort-view');
 /** @type {ListView} */
 const listView = document.querySelector('list-view');
 
-
 briefView.render();
 addView.render();
 filterView.render();
