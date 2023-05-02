@@ -9,3 +9,4 @@ const eventsPresenter = new EventsListPresenter({eventsContainer: siteMainElemen
 
 render(new FilterView(), siteHeaderElement);
 eventsPresenter.init();
+
