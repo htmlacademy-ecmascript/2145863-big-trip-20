@@ -1,7 +1,7 @@
 import Model from './model.js';
 import points from '../data/points.json';
 import destinations from '../data/destinations.json';
-import OfferGroups from '../data/offers.json';
+import offerGroups from '../data/offers.json';
 
 class AppModel extends Model {
   #points;
@@ -13,7 +13,7 @@ class AppModel extends Model {
 
     this.#points = points;
     this.#destinations = destinations;
-    this.#offerGroups = OfferGroups;
+    this.#offerGroups = offerGroups;
   }
 
   /**
