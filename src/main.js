@@ -4,19 +4,20 @@ import './views/filter-view.js';
 import './views/sort-view.js';
 import './views/list-view.js';
 
-/** @type {BriefView} */
-const briefView = document.querySelector('brief-view');
-/** @type {AddView} */
-const addView = document.querySelector('add-view');
-/** @type {FilterView} */
-const filterView = document.querySelector('filter-view');
-/** @type {SortView} */
-const sortView = document.querySelector('sort-view');
-/** @type {ListView} */
-const listView = document.querySelector('list-view');
+import AppModel from './models/app-model.js';
+import AddPresenter from './presenters/add-presenter.js';
+import BriefPresenter from './presenters/brief-presenter.js';
+// import CardPresenter from './presenter/__card-presenter.js';
+// import EditorPresenter from './presenter/__editor-presenter.js';
+import FilterPresenter from './presenters/filter-presenter.js';
+import ListPresenter from './presenters/list-presenter.js';
+import SortPresenter from './presenters/sort-presenter.js';
 
-briefView.render();
-addView.render();
-filterView.render();
-sortView.render();
-listView.render();
+const appModel = new AppModel();
+new AddPresenter(document.querySelector('add-view'));
+new BriefPresenter(document.querySelector('brief-view'));
+// new CardPresenter(document.querySelector('.card-view'));
+// new EditorPresenter(document.querySelector('.editor-view'));
+new FilterPresenter(document.querySelector('filter-view'));
+new SortPresenter(document.querySelector('sort-view'));
+new ListPresenter(document.querySelector('list-view'), appModel);
