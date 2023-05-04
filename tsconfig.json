@@ -9,6 +9,7 @@
     "checkJs": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "noEmit": true,
     "target": "esnext"
   },
