@@ -24,8 +24,8 @@
  * @prop {string} id
  * @prop {Array<{value: PointType, isSelected: boolean}>} types
  * @prop {Array<Destination & {isSelected: boolean}>} destinations
- * @prop {string} startDateTime
- * @prop {string} endDateTime
+ * @prop {string} startDateTime не форматированное
+ * @prop {string} endDateTime не форматированное
  * @prop {string} startDate
  * @prop {string} startTime
  * @prop {string} endTime

@@ -12,8 +12,6 @@ class ListPresenter extends Presenter {
   createViewState() {
     const points = this.model.getPoints();
     const items = points.map(this.createPointViewState, this);
-    console.log(items);
-    console.log(points);
     return {items};
   }
 
@@ -53,7 +51,7 @@ class ListPresenter extends Presenter {
       basePrice: point.basePrice,
       offers,
       isFavorite: point.isFavorite,
-      isEditable: index === 0,
+      isEditable: index === 2,
     };
   }
 }

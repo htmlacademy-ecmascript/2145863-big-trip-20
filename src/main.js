@@ -7,8 +7,6 @@ import './views/list-view.js';
 import AppModel from './models/app-model.js';
 import AddPresenter from './presenters/add-presenter.js';
 import BriefPresenter from './presenters/brief-presenter.js';
-// import CardPresenter from './presenter/__card-presenter.js';
-// import EditorPresenter from './presenter/__editor-presenter.js';
 import FilterPresenter from './presenters/filter-presenter.js';
 import ListPresenter from './presenters/list-presenter.js';
 import SortPresenter from './presenters/sort-presenter.js';
