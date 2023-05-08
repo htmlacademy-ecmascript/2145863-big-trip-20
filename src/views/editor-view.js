@@ -205,7 +205,7 @@ class EditorView extends View {
    */
   createDestinationDescriptionHtml() {
     const point = this.state;
-    const destination = point.destinations.find((it)=>it.isSelected)
+    const destination = point.destinations.find((it)=>it.isSelected);
 
     return html`
       <section class="event__section  event__section--destination">
