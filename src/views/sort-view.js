@@ -10,7 +10,7 @@ class SortView extends View {
 
   /**
    * @override
-   * @extends {View<SortItemViewState>}
+   * @extend {View<SortItemViewState>}
    */
   createHtml() {
     return html`
