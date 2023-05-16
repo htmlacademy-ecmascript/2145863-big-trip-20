@@ -9,18 +9,40 @@ class SortPresenter extends Presenter {
    * @returns {SortViewState}
   */
   createViewState() {
-    /**
-     * @type Array<SortType>
-     */
+    /** @type {UrlParams} */
+    const {sort = 'day'} = this.getUrlParams();
+    /** @type Array<SortType> */
     const types = ['day', 'event', 'time', 'price', 'offers'];
 
     const items = types.map((it) => ({
       value: it,
-      isSelected: it === 'day',
-      isDisabled: it === 'time' || it === 'offers',
+      isSelected: it === sort,
+      // isDisabled: it === 'time' || it === 'offers',
+      isDisabled: it === 'offers',
     }));
 
     return {items};
+  }
+
+  /**
+  * @override
+  */
+  addEventListeners() {
+    /**
+    * @param {Event & {target: {value: SortType}}} event
+    */
+    const handleViewChange = (event) => {
+      /**
+       * @type {UrlParams}
+       */
+      const urlParams = this.getUrlParams();
+
+      urlParams.sort = event.target.value;
+      this.setUrlParams(urlParams);
+    };
+
+
+    this.view.addEventListener('change', handleViewChange);
   }
 }
 

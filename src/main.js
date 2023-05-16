@@ -12,10 +12,12 @@ import ListPresenter from './presenters/list-presenter.js';
 import SortPresenter from './presenters/sort-presenter.js';
 
 const appModel = new AppModel();
+console.table(
+  appModel.getPoints({sort: 'time'})
+);
+
 new AddPresenter(document.querySelector('add-view'));
 new BriefPresenter(document.querySelector('brief-view'));
-// new CardPresenter(document.querySelector('.card-view'));
-// new EditorPresenter(document.querySelector('.editor-view'));
 new FilterPresenter(document.querySelector('filter-view'));
 new SortPresenter(document.querySelector('sort-view'));
 new ListPresenter(document.querySelector('list-view'), appModel);

@@ -10,7 +10,9 @@ class ListPresenter extends Presenter {
    * @returns {ListViewState}
    */
   createViewState() {
-    const points = this.model.getPoints();
+    /** @type {UrlParams} */
+    const urlParams = this.getUrlParams();
+    const points = this.model.getPoints(urlParams);
     const items = points.map(this.createPointViewState, this);
     return {items};
   }
@@ -38,7 +40,7 @@ class ListPresenter extends Presenter {
       isSelected: point.offerIds.includes(it.id),
     }));
 
-    /** @tyep {UrlParams} */
+    /** @type {UrlParams} */
     const urlParams = this.getUrlParams();
 
     return {
