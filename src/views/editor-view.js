@@ -30,7 +30,7 @@ class EditorView extends View {
   }
 
   disconnectedCallback() {
-    document.addEventListener('keydown', this);
+    document.removeEventListener('keydown', this);
   }
 
   /**
