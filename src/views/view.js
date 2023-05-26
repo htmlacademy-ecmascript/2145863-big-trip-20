@@ -21,7 +21,6 @@ class View extends HTMLElement {
     } else {
       this.innerHTML = String(this.createHtml());
     }
-
   }
 
   /**
@@ -36,7 +35,6 @@ class View extends HTMLElement {
    * @param {any} [detail]
    * @return {boolean}
    */
-
   notify(type, detail = null) {
     const cancelable = true;
     const bubbles = true;

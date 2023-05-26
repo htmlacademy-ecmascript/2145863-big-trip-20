@@ -8,7 +8,7 @@ import Presenter from './presenter.js';
 class ListPresenter extends Presenter {
   /**
    * @override
-   * @returns {ListViewState}
+  * @returns {ListViewState}
    */
   createViewState() {
     /** @type {UrlParams} */

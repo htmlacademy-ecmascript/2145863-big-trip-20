@@ -1,7 +1,7 @@
 import './editor-view.css';
 
 import View from './view.js';
-import {html} from '../utils.js';
+import {createDatePickrs, html} from '../utils.js';
 
 
 /**
@@ -9,6 +9,9 @@ import {html} from '../utils.js';
  * @implements {EventListenerObject}
 */
 class EditorView extends View {
+
+  /** @type {ReturnType<createDatePickrs>} */
+  #destroyDatePickers;
 
   constructor() {
     super();
@@ -18,10 +21,18 @@ class EditorView extends View {
   }
 
   connectedCallback() {
+    /**
+     * @type {NodeListOf<HTMLInputElement>}
+     */
+    const dateFields = this.querySelectorAll('.event__input--time');
+    const [startDateField, endDateField] = dateFields;
+    this.#destroyDatePickers = createDatePickrs(startDateField, endDateField);
+
     document.addEventListener('keydown', this);
   }
 
   disconnectedCallback() {
+    this.#destroyDatePickers();
     document.removeEventListener('keydown', this);
   }
 
