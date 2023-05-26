@@ -9,7 +9,9 @@ class FilterPresenter extends Presenter {
    * @returns {FilterViewState}
    */
   createViewState() {
-    // TODO: FilterViewState
+    /** @type {UrlParams} */
+    const {filter = 'everything'} = this.getUrlParams();
+
     /**
      * @type {Array<FilterType>}
      */
@@ -17,11 +19,33 @@ class FilterPresenter extends Presenter {
 
     const items = types.map((it) => ({
       value: it,
-      isSelected: it === 'everything',
-      isDisabled: it === 'future',
+      isSelected: it === filter,
+      isDisabled: false,
     }));
 
     return {items};
+  }
+
+  /**
+   *
+   * @param {Event & {target: {value: FilterType}}} event
+   */
+  handleViewChange(event) {
+    /** @type {UrlParams} */
+    const UrlParams = {
+      filter: event.target.value
+    };
+
+    UrlParams.filter = event.target.value;
+    delete UrlParams.edit;
+    this.setUrlParams(UrlParams);
+  }
+
+  /**
+   * @override
+   */
+  addEventListeners() {
+    this.view.addEventListener('change', this.handleViewChange.bind(this));
   }
 }
 
