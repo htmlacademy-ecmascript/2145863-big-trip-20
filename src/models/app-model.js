@@ -42,6 +42,33 @@ class AppModel extends Model {
   }
 
   /**
+   * @param {Point} point
+   */
+  updatePoint(point) {
+    const adaptedPoint = AppModel.adaptPointForServer(point);
+    const index = this.#points.findIndex((it) => it.id === adaptedPoint.id);
+    // this.#points[index] = adaptedPoint;
+    this.#points.splice(index, 1, adaptedPoint);
+  }
+
+  /**
+   * @param {Point} point
+   * @returns {PointInSnakeCase}
+   */
+  static adaptPointForServer(point) {
+    return {
+      'id': point.id,
+      'type': point.type,
+      'destination': point.destinationId,
+      'date_from': point.startDateTime,
+      'date_to': point.endDateTime,
+      'base_price': point.basePrice,
+      'offers': point.offerIds,
+      'is_favorite': point.isFavorite,
+    };
+  }
+
+  /**
    * @return {Array<Destination>}
    */
   getDestinations() {

@@ -1,5 +1,6 @@
+import AppModel from '../models/app-model.js';
 import {formatDate, formatDuration, formatTime} from '../utils.js';
-import EditorView from '../views/editor-view.js';
+// import EditorView from '../views/editor-view.js';
 import Presenter from './presenter.js';
 
 /**
@@ -62,6 +63,23 @@ class ListPresenter extends Presenter {
   }
 
   /**
+   * @param {PointViewState} point
+   * @returns {Point}
+   */
+  serializePointViewState(point) {
+    return {
+      id: point.id,
+      type: point.types.find((it) => it.isSelected).value,
+      destinationId: point.destinations.find((it) => it.isSelected)?.id,
+      startDateTime: point.startDateTime,
+      endDateTime: point.endDateTime,
+      basePrice: point.basePrice,
+      offerIds: point.offers.filter((it) => it.isSelected).map((it) => it.id),
+      isFavorite: point.isFavorite,
+    };
+  }
+
+  /**
    * @override
    */
   addEventListeners() {
@@ -69,6 +87,7 @@ class ListPresenter extends Presenter {
     this.view.addEventListener('close', this.handleViewClose.bind(this));
     this.view.addEventListener('favorite', this.handleViewFavorite.bind(this));
     this.view.addEventListener('edit', this.handleViewEdit.bind(this));
+    this.view.addEventListener('save', this.handleViewSave.bind(this));
   }
 
   /**
@@ -91,7 +110,6 @@ class ListPresenter extends Presenter {
   }
 
   /**
-
    * @param {CustomEvent & {target: CardView}} event
    */
   handleViewFavorite(event) {
@@ -99,6 +117,7 @@ class ListPresenter extends Presenter {
     const point = card.state;
 
     point.isFavorite = !point.isFavorite;
+    this.model.updatePoint(this.serializePointViewState(point));
     card.render();
   }
 
@@ -110,7 +129,6 @@ class ListPresenter extends Presenter {
     const field = event.detail;
     const point = editor.state;
 
-    // console.log(field.name);
     switch (field.name) {
       case 'event-type' : {
         const offerGroups = this.model.getOfferGroups();
@@ -133,8 +151,43 @@ class ListPresenter extends Presenter {
         editor.renderDestination();
         break;
       }
+
+      case 'event-start-time': {
+        point.startDateTime = field.value;
+        break;
+      }
+
+      case 'event-end-time': {
+        point.endDateTime = field.value;
+        break;
+      }
+
+      case 'event-price': {
+        point.basePrice = Number(field.value);
+        break;
+      }
+
+      case 'event-offer': {
+        const offer = point.offers.find((it) => it.id === field.value);
+        offer.isSelected = !offer.isSelected;
+        break;
+      }
+
     }
   }
+
+  /**
+   * @param {CustomEvent & {target: EditorView}} event
+   */
+  handleViewSave(event) {
+    const editor = event.target;
+    const point = editor.state;
+
+    event.preventDefault();
+    this.model.updatePoint(this.serializePointViewState(point));
+    this.handleViewClose();
+  }
+
 
 }
 

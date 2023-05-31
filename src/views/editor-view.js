@@ -3,7 +3,6 @@ import './editor-view.css';
 import View from './view.js';
 import {createDatePickrs, html} from '../utils.js';
 
-
 /**
  * @extends {View<PointViewState>}
  * @implements {EventListenerObject}
@@ -18,6 +17,7 @@ class EditorView extends View {
 
     this.addEventListener('click', this.handleClick);
     this.addEventListener('input', this.handleInput);
+    this.addEventListener('submit', this.handleSubmit);
   }
 
   connectedCallback() {
@@ -46,7 +46,6 @@ class EditorView extends View {
   }
 
   /**
-   *
    * @param {KeyboardEvent} event
    */
   handleEvent(event) {
@@ -60,6 +59,16 @@ class EditorView extends View {
    */
   handleInput(event) {
     this.notify('edit', event.target);
+  }
+
+  /**
+   * @param {SubmitEvent} event
+   */
+  handleSubmit(event) {
+    const actByDefault = this.notify('save');
+    if (!actByDefault) {
+      event.preventDefault();
+    }
   }
 
   /**
@@ -127,10 +136,10 @@ class EditorView extends View {
 
     return html`
     <div class="event__field-group  event__field-group--destination">
-    <label class="event__label  event__type-output" for="event-destination-1">
+    <label class="event__label event__type-output" for="event-destination-1">
       ${type.value}
     </label>
-    <input class="event__input  event__input--destination" id="event- destination-1" type="text" name="event-destination" value="${destination?.name}" list="destination-list-1">
+    <input class="event__input event__input--destination" id="event- destination-1" type="text" name="event-destination" value="${destination?.name}" list="destination-list-1">
     <datalist id="destination-list-1">
       ${point.destinations.map((it) => html`
         <option value="${it.name}"></option>
@@ -236,12 +245,13 @@ class EditorView extends View {
             <div class="event__offer-selector">
               <input
                 class="event__offer-checkbox  visually-hidden"
-                id="${it.id}"
+                id="event-offer-${it.id}"
                 type="checkbox"
-                name="event-offer-${it.id}"
+                name="event-offer"
+                value="${it.id}"
                 ${ it.isSelected ? ' checked ' : ''}
               />
-              <label class="event__offer-label" for="${it.id}">
+              <label class="event__offer-label" for="event-offer-${it.id}">
                 <span class="event__offer-title">${it.title}</span>
                 +€&nbsp;
                 <span class="event__offer-price">${it.price}</span>
