@@ -52,6 +52,14 @@ class AppModel extends Model {
   }
 
   /**
+   * @param {string} id
+   */
+  deletePoint(id) {
+    const index = this.#points.findIndex((it) => it.id === id);
+    this.#points.splice(index, 1);
+  }
+
+  /**
    * @param {Point} point
    * @returns {PointInSnakeCase}
    */
