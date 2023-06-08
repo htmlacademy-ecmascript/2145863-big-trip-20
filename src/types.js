@@ -81,6 +81,7 @@
  * @prop {Array<Offer & {isSelected?: boolean}>} offers
  * @prop {boolean} isFavorite
  * @prop {boolean} isEditable
+ * @prop {boolean} isDraft
  */
 
 /**
@@ -94,6 +95,18 @@
  * @prop {string} [edit]
  * @prop {FilterType} [filter]
  * @prop {SortType} [sort]
+ */
+
+/**
+ * @typedef {import('./services/api-service.js').default} ApiService
+ * @typedef {import('./services/service.js').default} Service
+ */
+
+/**
+ * @typedef ServiceOptions
+ * @prop {string} baseUrl
+ * @prop {number} minResponseTime
+ * @prop {string} authorization
  */
 
 /**

@@ -1,12 +1,46 @@
 import Model from './model.js';
-import points from '../data/points.json';
-import destinations from '../data/destinations.json';
-import offerGroups from '../data/offers.json';
 
 class AppModel extends Model {
-  #points = points;
-  #destinations = destinations;
-  #offerGroups = offerGroups;
+
+  /** @type {Array<PointInSnakeCase>} */
+  #points;
+  /** @type {Array<Destination>} */
+  #destinations;
+  /** @type {Array<OfferGroup>} */
+  #offerGroups;
+  #apiService;
+
+  /**
+   * @param {ApiService} apiService
+   */
+  constructor(apiService) {
+    super();
+    this.#apiService = apiService;
+  }
+
+  /**
+   * @returns {Promise<void>}
+   */
+  async load() {
+    try {
+      const data = await Promise.all([
+        this.#apiService.getPoints(),
+        this.#apiService.getDestinations(),
+        this.#apiService.getOfferGroups(),
+      ]);
+
+      const [points, destinations, offerGroups] = data;
+
+      this.#points = points;
+      this.#destinations = destinations;
+      this.#offerGroups = offerGroups;
+      this.notify('load');
+
+    } catch (error) {
+      this.notify('error', error);
+      throw error;
+    }
+  }
 
   /**
    * @type {Record<FilterType, (it: Point) => boolean>}
@@ -14,7 +48,7 @@ class AppModel extends Model {
   #filterCallbackMap = {
     everything: () => true,
     future: (it) => Date.parse(it.startDateTime) > Date.now(),
-    present: (it) => !this.#filterCallbackMap.past(it) && !this.#filterCallbackMap.future(it),
+    present: (it) => !this.#filterCallbackMap.past( it) && !this.#filterCallbackMap.future(it),
     past: (it) => Date.parse(it.endDateTime) < Date.now(),
   };
 
@@ -34,12 +68,23 @@ class AppModel extends Model {
    * @return {Array<Point>}
    */
   getPoints(criteria = {}) {
-    const adaptPoints = this.#points.map(AppModel.adaptPointForClient);
+    const adaptedPoints = this.#points.map(AppModel.adaptPointForClient);
     const filterCallback = this.#filterCallbackMap[criteria.filter] ?? this.#filterCallbackMap.everything;
     const sortCallback = this.#sortCallbackMap[criteria.sort] ?? this.#sortCallbackMap.day;
 
-    return adaptPoints.filter(filterCallback).sort(sortCallback);
+    return adaptedPoints.filter(filterCallback).sort(sortCallback);
   }
+
+  /**
+   * @param {Point} point
+   */
+  addPoint(point) {
+    const adaptedPoint = AppModel.adaptPointForServer(point);
+
+    adaptedPoint.id = crypto.randomUUID();
+    this.#points.push(adaptedPoint);
+  }
+
 
   /**
    * @param {Point} point
@@ -49,6 +94,14 @@ class AppModel extends Model {
     const index = this.#points.findIndex((it) => it.id === adaptedPoint.id);
     // this.#points[index] = adaptedPoint;
     this.#points.splice(index, 1, adaptedPoint);
+  }
+
+  /**
+   * @param {string} id
+   */
+  deletePoint(id) {
+    const index = this.#points.findIndex((it) => it.id === id);
+    this.#points.splice(index, 1);
   }
 
   /**
@@ -79,7 +132,6 @@ class AppModel extends Model {
    * @return {Array<OfferGroup>}
    */
   getOfferGroups() {
-    // @ts-ignore
     return structuredClone(this.#offerGroups);
   }
 

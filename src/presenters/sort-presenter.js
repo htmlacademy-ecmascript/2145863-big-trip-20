@@ -11,7 +11,7 @@ class SortPresenter extends Presenter {
   createViewState() {
     /** @type {UrlParams} */
     const {sort = 'day'} = this.getUrlParams();
-    /** @type Array<SortType> */
+    /** @type {Array<SortType>} */
     const types = ['day', 'event', 'time', 'price', 'offers'];
 
     const items = types.map((it) => ({

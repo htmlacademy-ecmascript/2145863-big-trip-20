@@ -1,5 +1,6 @@
-import AppModel from '../models/app-model.js';
+// import AppModel from '../models/app-model.js';
 import {formatDate, formatDuration, formatTime} from '../utils.js';
+// import EditorView from '../views/editor-view.js';
 // import EditorView from '../views/editor-view.js';
 import Presenter from './presenter.js';
 
@@ -16,11 +17,22 @@ class ListPresenter extends Presenter {
     const urlParams = this.getUrlParams();
     const points = this.model.getPoints(urlParams);
     const items = points.map(this.createPointViewState, this);
+
+    if (urlParams.edit === 'draft') {
+      /** @type {Partial<Point>} */
+      const draftPoint = {
+        type: 'taxi',
+        offerIds: [],
+        isFavorite: false,
+      };
+      items.unshift(this.createPointViewState(draftPoint));
+    }
+
     return {items};
   }
 
   /**
-   * @param {Point} point
+   * @param {Partial<Point>} point
    * @returns {PointViewState}
    */
   createPointViewState(point) {
@@ -44,6 +56,8 @@ class ListPresenter extends Presenter {
 
     /** @type {UrlParams} */
     const urlParams = this.getUrlParams();
+    const isDraft = point.id === undefined;
+    const isEditable = isDraft || point.id === urlParams.edit;
 
     return {
       id: point.id,
@@ -58,7 +72,8 @@ class ListPresenter extends Presenter {
       basePrice: point.basePrice,
       offers,
       isFavorite: point.isFavorite,
-      isEditable: point.id === urlParams.edit,
+      isEditable,
+      isDraft,
     };
   }
 
@@ -88,6 +103,7 @@ class ListPresenter extends Presenter {
     this.view.addEventListener('favorite', this.handleViewFavorite.bind(this));
     this.view.addEventListener('edit', this.handleViewEdit.bind(this));
     this.view.addEventListener('save', this.handleViewSave.bind(this));
+    this.view.addEventListener('delete', this.handleViewDelete.bind(this));
   }
 
   /**
@@ -184,10 +200,27 @@ class ListPresenter extends Presenter {
     const point = editor.state;
 
     event.preventDefault();
-    this.model.updatePoint(this.serializePointViewState(point));
+
+    if (point.isDraft) {
+      this.model.addPoint(this.serializePointViewState(point));
+    } else {
+      this.model.updatePoint(this.serializePointViewState(point));
+    }
+
     this.handleViewClose();
   }
 
+  /**
+   * @param {CustomEvent & {target: EditorView}} event
+   */
+  handleViewDelete(event) {
+    const editor = event.target;
+    const point = editor.state;
+
+    event.preventDefault();
+    this.model.deletePoint(point.id);
+    this.handleViewClose();
+  }
 
 }
 
