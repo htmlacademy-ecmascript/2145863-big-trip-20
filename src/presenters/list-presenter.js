@@ -1,6 +1,6 @@
 // import AppModel from '../models/app-model.js';
 import {formatDate, formatDuration, formatTime} from '../utils.js';
-import EditorView from '../views/editor-view.js';
+// import EditorView from '../views/editor-view.js';
 // import EditorView from '../views/editor-view.js';
 import Presenter from './presenter.js';
 
@@ -28,7 +28,6 @@ class ListPresenter extends Presenter {
       items.unshift(this.createPointViewState(draftPoint));
     }
 
-    // console.log(items.map((it) => ({isEditable: it.isEditable, isDraft: it.isDraft})));
     return {items};
   }
 
@@ -201,7 +200,13 @@ class ListPresenter extends Presenter {
     const point = editor.state;
 
     event.preventDefault();
-    this.model.updatePoint(this.serializePointViewState(point));
+
+    if (point.isDraft) {
+      this.model.addPoint(this.serializePointViewState(point));
+    } else {
+      this.model.updatePoint(this.serializePointViewState(point));
+    }
+
     this.handleViewClose();
   }
 
