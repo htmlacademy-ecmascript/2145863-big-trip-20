@@ -3,6 +3,7 @@
 }
 
 .trip-list__item {
+  display: block;
   margin-bottom: 54px;
   margin-left: auto;
 }

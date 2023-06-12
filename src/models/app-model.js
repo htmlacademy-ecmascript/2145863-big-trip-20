@@ -48,7 +48,7 @@ class AppModel extends Model {
   #filterCallbackMap = {
     everything: () => true,
     future: (it) => Date.parse(it.startDateTime) > Date.now(),
-    present: (it) => !this.#filterCallbackMap.past( it) && !this.#filterCallbackMap.future(it),
+    present: (it) => !this.#filterCallbackMap.past(it) && !this.#filterCallbackMap.future(it),
     past: (it) => Date.parse(it.endDateTime) < Date.now(),
   };
 
@@ -57,10 +57,10 @@ class AppModel extends Model {
    */
   #sortCallbackMap = {
     day: (a, b) => Date.parse(a.startDateTime) - Date.parse(b.startDateTime),
-    event: (a, b) => 0,
+    event: () => 0,
     time: (a, b) => AppModel.calcPointDuration(a) - AppModel.calcPointDuration(b),
     price: (a, b) => a.basePrice - b.basePrice,
-    offers: (a, b) => 0,
+    offers: () => 0,
   };
 
   /**
@@ -78,30 +78,49 @@ class AppModel extends Model {
   /**
    * @param {Point} point
    */
-  addPoint(point) {
-    const adaptedPoint = AppModel.adaptPointForServer(point);
+  async addPoint(point) {
+    try {
+      this.notify('busy');
+      const adaptedPoint = AppModel.adaptPointForServer(point);
+      const addedPoint = await this.#apiService.addPoint(adaptedPoint);
 
-    adaptedPoint.id = crypto.randomUUID();
-    this.#points.push(adaptedPoint);
+      this.#points.push(addedPoint);
+    } finally {
+      this.notify('idle');
+    }
   }
 
 
   /**
    * @param {Point} point
    */
-  updatePoint(point) {
-    const adaptedPoint = AppModel.adaptPointForServer(point);
-    const index = this.#points.findIndex((it) => it.id === adaptedPoint.id);
-    // this.#points[index] = adaptedPoint;
-    this.#points.splice(index, 1, adaptedPoint);
+  async updatePoint(point) {
+    try {
+      this.notify('busy');
+      const adaptedPoint = AppModel.adaptPointForServer(point);
+      const updatedPoint = await this.#apiService.updatePoint(adaptedPoint);
+      const index = this.#points.findIndex((it) => it.id === adaptedPoint.id);
+
+      this.#points.splice(index, 1, updatedPoint);
+    } finally {
+      this.notify('idle');
+    }
   }
 
   /**
    * @param {string} id
    */
-  deletePoint(id) {
-    const index = this.#points.findIndex((it) => it.id === id);
-    this.#points.splice(index, 1);
+  async deletePoint(id) {
+    try {
+      this.notify('busy');
+
+      await this.#apiService.deletePoint(id);
+      const index = this.#points.findIndex((it) => it.id === id);
+
+      this.#points.splice(index, 1);
+    } finally {
+      this.notify('idle');
+    }
   }
 
   /**
