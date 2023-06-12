@@ -24,6 +24,44 @@ class ApiService extends Service {
   }
 
   /**
+   * @param {PointInSnakeCase} point
+   * @returns {Promise<PointInSnakeCase>}
+   */
+  async addPoint(point) {
+    const response = await this.request('points', {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify(point),
+    });
+
+    return response.json();
+  }
+
+  /**
+   * @param {PointInSnakeCase} point
+   * @returns {Promise<PointInSnakeCase>}
+   */
+  async updatePoint(point) {
+    const response = await this.request(`points/${point.id}`, {
+      method: 'PUT',
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify(point),
+    });
+
+    return response.json();
+  }
+
+  /**
+   * @param {string} id
+   * @returns {Promise<void>}
+   */
+  async deletePoint(id) {
+    await this.request(`points/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  /**
    * @returns {Promise<Array<Destination>>}
    */
   async getDestinations() {

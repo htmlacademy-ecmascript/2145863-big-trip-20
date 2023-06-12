@@ -42,6 +42,28 @@ class View extends HTMLElement {
 
     return this.dispatchEvent(event);
   }
+
+  transformMap = [
+    (it) => `rotateX(${it * 5}deg)`,
+    (it) => `rotateY(${it * 5}deg)`,
+    (it) => `translateX(${it}px)`,
+    (it) => `translateY(${it}px)`,
+  ];
+
+  /**
+   * @param {KeyframeAnimationOptions} [options]
+   */
+  shake(options) {
+    const keyframes = {
+      transform: [0, -5, 0, 5, 0].map((it) => `translateX(${it}px)`)
+    };
+
+    return this.animate(keyframes, {
+      duration: 150,
+      iterations: 4,
+      ...options
+    });
+  }
 }
 
 export default View;

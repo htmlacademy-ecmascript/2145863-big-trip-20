@@ -78,30 +78,49 @@ class AppModel extends Model {
   /**
    * @param {Point} point
    */
-  addPoint(point) {
-    const adaptedPoint = AppModel.adaptPointForServer(point);
+  async addPoint(point) {
+    try {
+      this.notify('busy');
+      const adaptedPoint = AppModel.adaptPointForServer(point);
+      const addedPoint = await this.#apiService.addPoint(adaptedPoint);
 
-    adaptedPoint.id = crypto.randomUUID();
-    this.#points.push(adaptedPoint);
+      this.#points.push(addedPoint);
+    } finally {
+      this.notify('idle');
+    }
   }
 
 
   /**
    * @param {Point} point
    */
-  updatePoint(point) {
-    const adaptedPoint = AppModel.adaptPointForServer(point);
-    const index = this.#points.findIndex((it) => it.id === adaptedPoint.id);
-    // this.#points[index] = adaptedPoint;
-    this.#points.splice(index, 1, adaptedPoint);
+  async updatePoint(point) {
+    try {
+      this.notify('busy');
+      const adaptedPoint = AppModel.adaptPointForServer(point);
+      const updatedPoint = await this.#apiService.updatePoint(adaptedPoint);
+      const index = this.#points.findIndex((it) => it.id === adaptedPoint.id);
+
+      this.#points.splice(index, 1, updatedPoint);
+    } finally {
+      this.notify('idle');
+    }
   }
 
   /**
    * @param {string} id
    */
-  deletePoint(id) {
-    const index = this.#points.findIndex((it) => it.id === id);
-    this.#points.splice(index, 1);
+  async deletePoint(id) {
+    try {
+      this.notify('busy');
+
+      await this.#apiService.deletePoint(id);
+      const index = this.#points.findIndex((it) => it.id === id);
+
+      this.#points.splice(index, 1);
+    } finally {
+      this.notify('idle');
+    }
   }
 
   /**

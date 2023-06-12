@@ -74,7 +74,7 @@ class EditorView extends View {
   }
 
   /**
-   * @param {ResetEvent} event
+   * @param {SubmitEvent} event
    */
   handleReset(event) {
     const point = this.state;
@@ -219,8 +219,10 @@ class EditorView extends View {
    * @return {SafeHtml}
    */
   createSubmitButtonHtml() {
+    const point = this.state;
+
     return html`
-    <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+    <button ${point.isSaving ? 'disabled' : ''} class="event__save-btn  btn  btn--blue" type="submit">${point.isSaving ? 'Saving...' : 'Save'}</button>
     `;
   }
 
@@ -237,7 +239,7 @@ class EditorView extends View {
     }
 
     return html`
-      <button class="event__reset-btn" type="reset">Delete</button>
+      <button ${point.isDeleting ? 'disabled' : ''} class="event__reset-btn btn" type="reset">${point.isDeleting ? 'Deleting...' : 'Delete'}</button>
     `;
   }
 
@@ -334,6 +336,14 @@ class EditorView extends View {
   // самой операции рендеринга (единая точка хранения информации о селекторе, который может измениться в процессе на другой)
   renderDestination() {
     this.render('.event__section--destination', this.createDestinationDescriptionHtml());
+  }
+
+  renderSubmitButton() {
+    this.render('.event__save-btn', this.createSubmitButtonHtml());
+  }
+
+  renderResetButton() {
+    this.render('.event__reset-btn', this.createResetButtonHtml());
   }
 }
 
