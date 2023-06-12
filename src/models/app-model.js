@@ -48,7 +48,7 @@ class AppModel extends Model {
   #filterCallbackMap = {
     everything: () => true,
     future: (it) => Date.parse(it.startDateTime) > Date.now(),
-    present: (it) => !this.#filterCallbackMap.past( it) && !this.#filterCallbackMap.future(it),
+    present: (it) => !this.#filterCallbackMap.past(it) && !this.#filterCallbackMap.future(it),
     past: (it) => Date.parse(it.endDateTime) < Date.now(),
   };
 
@@ -57,10 +57,10 @@ class AppModel extends Model {
    */
   #sortCallbackMap = {
     day: (a, b) => Date.parse(a.startDateTime) - Date.parse(b.startDateTime),
-    event: (a, b) => 0,
+    event: () => 0,
     time: (a, b) => AppModel.calcPointDuration(a) - AppModel.calcPointDuration(b),
     price: (a, b) => a.basePrice - b.basePrice,
-    offers: (a, b) => 0,
+    offers: () => 0,
   };
 
   /**

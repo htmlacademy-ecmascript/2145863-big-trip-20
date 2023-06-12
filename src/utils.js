@@ -1,6 +1,6 @@
 import flatpickr from 'flatpickr';
 
-import dayjs, {locale} from 'dayjs';
+import dayjs from 'dayjs';
 import {escape as escapeHtml} from 'he';
 import durationPlugin from 'dayjs/plugin/duration.js';
 
