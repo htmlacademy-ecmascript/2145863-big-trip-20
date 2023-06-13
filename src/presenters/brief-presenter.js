@@ -57,13 +57,21 @@ class BriefPresenter extends Presenter {
   /** @returns {number} */
   getCost() {
     const points = this.model.getPoints();
-    const total = points.reduce((acc, point) => {
-      return acc + point.basePrice;
+    const offersGroups = this.model.getOfferGroups();
+
+    const totalCost = points.reduce((costAcc, point) => {
+      const {offers} = offersGroups.find((it) => it.type === point.type);
+      const pointCost = offers.reduce((offersAcc, offer) => {
+        if (point.offerIds.includes(offer.id)) {
+          return offersAcc + offer.price;
+        }
+        return offersAcc;
+      }, point.basePrice);
+
+      return costAcc + pointCost;
     }, 0);
 
-    console.log(total);
-
-    return 1230;
+    return totalCost;
   }
 }
 
