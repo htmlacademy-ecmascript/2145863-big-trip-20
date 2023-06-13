@@ -17,7 +17,7 @@ class SortPresenter extends Presenter {
     const items = types.map((it) => ({
       value: it,
       isSelected: it === sort,
-      isDisabled: it === 'time' || it === 'offers',
+      isDisabled: it === 'event' || it === 'offers',
     }));
 
     return {items};
