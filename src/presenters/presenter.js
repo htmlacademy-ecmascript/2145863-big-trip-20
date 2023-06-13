@@ -54,8 +54,6 @@ class Presenter {
     window.dispatchEvent(new PopStateEvent('popstate'));
   }
 
-  //QUESTION: pushState - асинхронный метод, по логике он будет выполнен позже dispatchEvent, так как будет поставлен в очередь микрозадач
-
   /**
    * @return {Object<string, string>}
    */
