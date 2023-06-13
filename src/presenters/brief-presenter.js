@@ -19,7 +19,26 @@ class BriefPresenter extends Presenter {
 
   /** @returns {string} */
   getPlaces() {
-    return 'Amsterdam — Chamonix — Geneva';
+    const points = this.model.getPoints();
+    const destinations = this.model.getDestinations();
+
+    const names = points
+      .map((point) => {
+        const destination = destinations.find((it) => it.id === point.destinationId);
+
+        return destination.name;
+      })
+      .filter((name, index, list) => {
+        const nextName = list[index + 1];
+
+        return name !== nextName;
+      });
+
+    if (names.length > 3) {
+      names.splice(1, names.length - 2, '...');
+    }
+
+    return names.join(' — ');
   }
 
   /** @returns {string} */
@@ -37,6 +56,13 @@ class BriefPresenter extends Presenter {
 
   /** @returns {number} */
   getCost() {
+    const points = this.model.getPoints();
+    const total = points.reduce((acc, point) => {
+      return acc + point.basePrice;
+    }, 0);
+
+    console.log(total);
+
     return 1230;
   }
 }
