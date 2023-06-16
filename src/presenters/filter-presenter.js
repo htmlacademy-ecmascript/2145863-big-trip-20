@@ -31,13 +31,13 @@ class FilterPresenter extends Presenter {
    */
   handleViewChange(event) {
     /** @type {UrlParams} */
-    const UrlParams = {
+    const urlParams = {
       filter: event.target.value
     };
 
-    UrlParams.filter = event.target.value;
-    delete UrlParams.edit;
-    this.setUrlParams(UrlParams);
+    urlParams.filter = event.target.value;
+    delete urlParams.edit;
+    this.setUrlParams(urlParams);
   }
 
   /**
