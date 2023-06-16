@@ -81,10 +81,13 @@ class AppModel extends Model {
   async addPoint(point) {
     try {
       this.notify('busy');
+
       const adaptedPoint = AppModel.adaptPointForServer(point);
       const addedPoint = await this.#apiService.addPoint(adaptedPoint);
 
       this.#points.push(addedPoint);
+      this.notify('change');
+
     } finally {
       this.notify('idle');
     }
@@ -97,11 +100,14 @@ class AppModel extends Model {
   async updatePoint(point) {
     try {
       this.notify('busy');
+
       const adaptedPoint = AppModel.adaptPointForServer(point);
       const updatedPoint = await this.#apiService.updatePoint(adaptedPoint);
       const index = this.#points.findIndex((it) => it.id === adaptedPoint.id);
 
       this.#points.splice(index, 1, updatedPoint);
+      this.notify('change');
+
     } finally {
       this.notify('idle');
     }
@@ -113,11 +119,13 @@ class AppModel extends Model {
   async deletePoint(id) {
     try {
       this.notify('busy');
-
       await this.#apiService.deletePoint(id);
+
       const index = this.#points.findIndex((it) => it.id === id);
 
       this.#points.splice(index, 1);
+      this.notify('change');
+
     } finally {
       this.notify('idle');
     }

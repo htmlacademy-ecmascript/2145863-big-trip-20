@@ -10,7 +10,7 @@ class ApiService extends Service {
       baseUrl: 'https://20.ecmascript.pages.academy/big-trip/',
       minResponseTime: 500,
       authorization: '',
-      // options - позволяет расширить количество параметров в будущем
+      // options - для возможности расширения
       ...options,
     });
   }

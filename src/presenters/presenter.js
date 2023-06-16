@@ -14,7 +14,11 @@ class Presenter {
     this.addEventListeners();
     globalThis.queueMicrotask(() => this.updateView());
 
-    window.addEventListener('popstate', () => this.updateView());
+    window.addEventListener('popstate', this.handleWindowPopState.bind(this));
+  }
+
+  handleWindowPopState() {
+    this.updateView();
   }
 
   updateView() {
@@ -47,14 +51,8 @@ class Presenter {
     });
 
     window.history.pushState(null, '', url.href);
-    // событие 'popstate' возникает только при интерактивной навигации по истории
-    // или когда используются методы типа history.go(). history.PushState()
-    // меняет адресную строку и вносит запись в стек history, но 'popstate'
-    // требуется задиспачить самостоятельно вручную
     window.dispatchEvent(new PopStateEvent('popstate'));
   }
-
-  //QUESTION: pushState - асинхронный метод, по логике он будет выполнен позже dispatchEvent, так как будет поставлен в очередь микрозадач
 
   /**
    * @return {Object<string, string>}

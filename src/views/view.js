@@ -43,13 +43,6 @@ class View extends HTMLElement {
     return this.dispatchEvent(event);
   }
 
-  transformMap = [
-    (it) => `rotateX(${it * 5}deg)`,
-    (it) => `rotateY(${it * 5}deg)`,
-    (it) => `translateX(${it}px)`,
-    (it) => `translateY(${it}px)`,
-  ];
-
   /**
    * @param {KeyframeAnimationOptions} [options]
    */

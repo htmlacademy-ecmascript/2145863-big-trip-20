@@ -17,6 +17,9 @@ function formatDuration(startDateTime, endDateTime) {
   const milliseconds = dayjs(endDateTime).diff(startDateTime);
   const duration = dayjs.duration(milliseconds);
 
+  if (duration.months()) {
+    return duration.format('MM[m] DD[d]  HH[h] mm[m]');
+  }
   if (duration.days()) {
     return duration.format('DD[d]  HH[h] mm[m]');
   }
@@ -28,11 +31,31 @@ function formatDuration(startDateTime, endDateTime) {
 }
 
 /**
- * @param {string} dateTime
+ * @param {string | dayjs.Dayjs} dateTime
+ * @param {boolean} [narrow]
  * @return {string}
  */
-function formatDate(dateTime) {
-  return dayjs(dateTime).format('MMM D');
+function formatDate(dateTime, narrow) {
+  return dayjs(dateTime).format(narrow ? 'D' : 'MMM D');
+}
+
+/**
+ * @param {string} startDateTime
+ * @param {string} endDateTime
+ * @returns {string}
+ */
+function formatDateRange(startDateTime, endDateTime) {
+  const start = dayjs(startDateTime);
+  const end = dayjs(endDateTime);
+
+  if (start.isSame(end, 'date')) {
+    return formatDate(start);
+  }
+
+  return [
+    formatDate(start),
+    formatDate(end, start.isSame(end, 'month')),
+  ].join(' — ');
 }
 
 /**
@@ -103,4 +126,12 @@ function html(strings, ...values) {
   return new SafeHtml(result);
 }
 
-export {createDatePickers as createDatePickrs, SafeHtml, html, formatDate, formatTime, formatDuration};
+export {
+  createDatePickers,
+  SafeHtml,
+  html,
+  formatDate,
+  formatTime,
+  formatDuration,
+  formatDateRange,
+};
