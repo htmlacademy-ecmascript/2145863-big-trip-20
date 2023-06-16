@@ -332,8 +332,6 @@ class EditorView extends View {
     this.render('.event__section--offers', this.createOfferListFieldHtml());
   }
 
-  // Вынесение в отдельный метод отрисовки Destination позволят  инкапсулировать технические детали подверженные изменению от
-  // самой операции рендеринга (единая точка хранения информации о селекторе, который может измениться в процессе на другой)
   renderDestination() {
     this.render('.event__section--destination', this.createDestinationDescriptionHtml());
   }

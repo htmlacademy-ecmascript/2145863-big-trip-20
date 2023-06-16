@@ -1,7 +1,4 @@
-// import AppModel from '../models/app-model.js';
 import {formatDate, formatDuration, formatTime} from '../utils.js';
-// import EditorView from '../views/editor-view.js';
-// import EditorView from '../views/editor-view.js';
 import Presenter from './presenter.js';
 
 /**

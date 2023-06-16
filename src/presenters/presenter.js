@@ -51,10 +51,6 @@ class Presenter {
     });
 
     window.history.pushState(null, '', url.href);
-    // событие 'popstate' возникает только при интерактивной навигации по истории
-    // или когда используются методы типа history.go(). history.PushState()
-    // меняет адресную строку и вносит запись в стек history, но 'popstate'
-    // требуется задиспачить самостоятельно вручную
     window.dispatchEvent(new PopStateEvent('popstate'));
   }
 
