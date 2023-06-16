@@ -73,6 +73,22 @@ class BriefPresenter extends Presenter {
 
     return totalCost;
   }
+
+  /**
+   * @override
+   */
+  handleWindowPopState() {}
+
+  /**
+   * @override
+   */
+  addEventListeners() {
+    this.model.addEventListener('change', this.handleModelChange.bind(this));
+  }
+
+  handleModelChange() {
+    this.updateView();
+  }
 }
 
 export default BriefPresenter;
