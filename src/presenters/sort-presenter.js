@@ -28,13 +28,13 @@ class SortPresenter extends Presenter {
   * @override
   */
   addEventListeners() {
-    this.view.addEventListener('change', this.handleViewChange.bind(this));
+    this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
   /**
    * @param {Event & {target: {value: SortType}}} event
    */
-  handleViewChange(event) {
+  onViewChange(event) {
     /**
      * @type {UrlParams}
      */

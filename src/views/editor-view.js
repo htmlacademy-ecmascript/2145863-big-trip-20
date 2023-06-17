@@ -1,11 +1,12 @@
 import './editor-view.css';
 
 import View from './view.js';
-import {createDatePickers, html} from '../utils.js';
+import {html} from '../safe-html.js';
+import {createDatePickers} from '../utils.js';
 
 /**
  * @extends {View<PointViewState>}
- * @implements {EventListenerObject}
+ * @implement {EventListenerObject}
 */
 class EditorView extends View {
 
@@ -15,10 +16,10 @@ class EditorView extends View {
   constructor() {
     super();
 
-    this.addEventListener('click', this.handleClick);
-    this.addEventListener('input', this.handleInput);
-    this.addEventListener('submit', this.handleSubmit);
-    this.addEventListener('reset', this.handleReset);
+    this.addEventListener('click', this.onEditorClick);
+    this.addEventListener('input', this.onEditorInput);
+    this.addEventListener('submit', this.onEditorSubmit);
+    this.addEventListener('reset', this.onEditorReset);
   }
 
   connectedCallback() {
@@ -40,7 +41,7 @@ class EditorView extends View {
   /**
    * @param {MouseEvent & {target: Element}} event
    */
-  handleClick(event) {
+  onEditorClick(event) {
     if (event.target.closest('.event__rollup-btn')) {
       this.notify('close');
     }
@@ -58,14 +59,14 @@ class EditorView extends View {
   /**
    * @param {InputEvent} event
    */
-  handleInput(event) {
+  onEditorInput(event) {
     this.notify('edit', event.target);
   }
 
   /**
    * @param {SubmitEvent} event
    */
-  handleSubmit(event) {
+  onEditorSubmit(event) {
     const actByDefault = this.notify('save');
 
     if (!actByDefault) {
@@ -76,7 +77,7 @@ class EditorView extends View {
   /**
    * @param {SubmitEvent} event
    */
-  handleReset(event) {
+  onEditorReset(event) {
     const point = this.state;
     const actByDefault = this.notify(point.isDraft ? 'close' : 'delete');
 

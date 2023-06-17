@@ -95,18 +95,18 @@ class ListPresenter extends Presenter {
    * @override
    */
   addEventListeners() {
-    this.view.addEventListener('open', this.handleViewOpen.bind(this));
-    this.view.addEventListener('close', this.handleViewClose.bind(this));
-    this.view.addEventListener('favorite', this.handleViewFavorite.bind(this));
-    this.view.addEventListener('edit', this.handleViewEdit.bind(this));
-    this.view.addEventListener('save', this.handleViewSave.bind(this));
-    this.view.addEventListener('delete', this.handleViewDelete.bind(this));
+    this.view.addEventListener('open', this.onViewOpen.bind(this));
+    this.view.addEventListener('close', this.onViewClose.bind(this));
+    this.view.addEventListener('favorite', this.onViewFavorite.bind(this));
+    this.view.addEventListener('edit', this.onViewEdit.bind(this));
+    this.view.addEventListener('save', this.onViewSave.bind(this));
+    this.view.addEventListener('delete', this.onViewDelete.bind(this));
   }
 
   /**
    * @param {CustomEvent & {target: CardView}} event
    */
-  handleViewOpen(event) {
+  onViewOpen(event) {
     /** @type {UrlParams} */
     const urlParams = this.getUrlParams();
 
@@ -114,7 +114,7 @@ class ListPresenter extends Presenter {
     this.setUrlParams(urlParams);
   }
 
-  handleViewClose() {
+  onViewClose() {
     /** @type {UrlParams} */
     const urlParams = this.getUrlParams();
 
@@ -125,7 +125,7 @@ class ListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: CardView}} event
    */
-  async handleViewFavorite(event) {
+  async onViewFavorite(event) {
     const card = event.target;
     const point = card.state;
 
@@ -142,7 +142,7 @@ class ListPresenter extends Presenter {
   /**
    * @param {CustomEvent<HTMLInputElement> & {target: EditorView}} event
    */
-  handleViewEdit(event) {
+  onViewEdit(event) {
     const editor = event.target;
     const field = event.detail;
     const point = editor.state;
@@ -197,7 +197,7 @@ class ListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: EditorView}} event
    */
-  async handleViewSave(event) {
+  async onViewSave(event) {
     const editor = event.target;
     const point = editor.state;
 
@@ -213,7 +213,7 @@ class ListPresenter extends Presenter {
         await this.model.updatePoint(this.serializePointViewState(point));
       }
 
-      this.handleViewClose();
+      this.onViewClose();
 
     } catch (error) {
       point.isSaving = false;
@@ -226,7 +226,7 @@ class ListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: EditorView}} event
    */
-  async handleViewDelete(event) {
+  async onViewDelete(event) {
     const editor = event.target;
     const point = editor.state;
 
@@ -236,7 +236,7 @@ class ListPresenter extends Presenter {
       editor.renderResetButton();
 
       await this.model.deletePoint(point.id);
-      this.handleViewClose();
+      this.onViewClose();
 
     } catch(error) {
       point.isDeleting = false;

@@ -55,11 +55,11 @@ class PlaceholderPresenter extends Presenter {
    * @override
    */
   addEventListeners() {
-    this.model.addEventListener('load', this.handleModelLoad.bind(this));
-    this.model.addEventListener('error', this.handleModelError.bind(this));
+    this.model.addEventListener('load', this.onModelLoad.bind(this));
+    this.model.addEventListener('error', this.onModelError.bind(this));
   }
 
-  handleModelLoad() {
+  onModelLoad() {
     this.isModelLoaded = true;
     this.updateView();
   }
@@ -67,7 +67,7 @@ class PlaceholderPresenter extends Presenter {
   /**
    * @param {CustomEvent<Error>} event
    */
-  handleModelError(event) {
+  onModelError(event) {
     this.modelError = event.detail;
     this.updateView();
   }

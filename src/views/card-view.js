@@ -1,18 +1,18 @@
 import View from './view.js';
-import {html} from '../utils.js';
+import {html} from '../safe-html.js';
 
 /** @extends {View<PointViewState>} */
 class CardView extends View {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleClick);
+    this.addEventListener('click', this.onCardClick);
   }
 
   /**
    * @param {MouseEvent  & {target: Element}} event
    */
-  handleClick(event) {
+  onCardClick(event) {
     if (event.target.closest('.event__rollup-btn')) {
       this.notify('open');
     } else if (event.target.closest('.event__favorite-btn')) {
