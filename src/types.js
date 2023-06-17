@@ -3,7 +3,7 @@
  */
 
 /**
- * @typedef {import('./utils.js').SafeHtml} SafeHtml
+ * @typedef {import('./safe-html.js').SafeHtml} SafeHtml
  */
 
 // Views классы

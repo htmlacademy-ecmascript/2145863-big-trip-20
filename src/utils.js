@@ -1,7 +1,6 @@
 import flatpickr from 'flatpickr';
 
 import dayjs from 'dayjs';
-import {escape as escapeHtml} from 'he';
 import durationPlugin from 'dayjs/plugin/duration.js';
 
 import 'flatpickr/dist/flatpickr.css';
@@ -97,39 +96,8 @@ function createDatePickers(startDateField, endDateField) {
   };
 }
 
-class SafeHtml extends String {}
-
-/**
- * @param {TemplateStringsArray} strings
- * @param {...any} values
- * @return {SafeHtml}
- */
-function html(strings, ...values) {
-  const result = strings.reduce((before, after, index) => {
-    const value = values[index - 1];
-
-    if (value === undefined) {
-      return before + after;
-    }
-
-    if (Array.isArray(value) && value.every((it) => it instanceof SafeHtml)) {
-      return before + value.join('') + after;
-    }
-
-    if (!(value instanceof SafeHtml)) {
-      return before + escapeHtml(String(value)) + after;
-    }
-
-    return before + value + after;
-  });
-
-  return new SafeHtml(result);
-}
-
 export {
   createDatePickers,
-  SafeHtml,
-  html,
   formatDate,
   formatTime,
   formatDuration,
