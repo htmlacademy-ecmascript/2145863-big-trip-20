@@ -21,10 +21,10 @@ class AddPresenter extends Presenter {
    * @override
    */
   addEventListeners() {
-    this.view.addEventListener('click', this.handlerViewClick.bind(this));
+    this.view.addEventListener('click', this.onViewClick.bind(this));
   }
 
-  handlerViewClick() {
+  onViewClick() {
     /** @type {UrlParams} */
     const urlParams = {
       edit: 'draft',

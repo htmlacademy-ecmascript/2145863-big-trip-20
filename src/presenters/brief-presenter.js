@@ -77,16 +77,16 @@ class BriefPresenter extends Presenter {
   /**
    * @override
    */
-  handlerWindowPopState() {}
+  onWindowPopState() {}
 
   /**
    * @override
    */
   addEventListeners() {
-    this.model.addEventListener('change', this.handlerModelChange.bind(this));
+    this.model.addEventListener('change', this.onModelChange.bind(this));
   }
 
-  handlerModelChange() {
+  onModelChange() {
     this.updateView();
   }
 }
