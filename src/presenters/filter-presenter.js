@@ -29,7 +29,7 @@ class FilterPresenter extends Presenter {
   /**
    * @param {Event & {target: {value: FilterType}}} event
    */
-  handleViewChange(event) {
+  handlerViewChange(event) {
     /** @type {UrlParams} */
     const urlParams = {
       filter: event.target.value
@@ -44,7 +44,7 @@ class FilterPresenter extends Presenter {
    * @override
    */
   addEventListeners() {
-    this.view.addEventListener('change', this.handleViewChange.bind(this));
+    this.view.addEventListener('change', this.handlerViewChange.bind(this));
   }
 }
 
