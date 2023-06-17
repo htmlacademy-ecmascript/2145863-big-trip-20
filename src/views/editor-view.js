@@ -15,10 +15,10 @@ class EditorView extends View {
   constructor() {
     super();
 
-    this.addEventListener('click', this.handlerClick);
-    this.addEventListener('input', this.handlerInput);
-    this.addEventListener('submit', this.handlerSubmit);
-    this.addEventListener('reset', this.handlerReset);
+    this.addEventListener('click', this.handlerEditorClick);
+    this.addEventListener('input', this.handlerEditorInput);
+    this.addEventListener('submit', this.handlerEditorSubmit);
+    this.addEventListener('reset', this.handlerEditorReset);
   }
 
   connectedCallback() {
@@ -40,7 +40,7 @@ class EditorView extends View {
   /**
    * @param {MouseEvent & {target: Element}} event
    */
-  handlerClick(event) {
+  handlerEditorClick(event) {
     if (event.target.closest('.event__rollup-btn')) {
       this.notify('close');
     }
@@ -58,14 +58,14 @@ class EditorView extends View {
   /**
    * @param {InputEvent} event
    */
-  handlerInput(event) {
+  handlerEditorInput(event) {
     this.notify('edit', event.target);
   }
 
   /**
    * @param {SubmitEvent} event
    */
-  handlerSubmit(event) {
+  handlerEditorSubmit(event) {
     const actByDefault = this.notify('save');
 
     if (!actByDefault) {
@@ -76,7 +76,7 @@ class EditorView extends View {
   /**
    * @param {SubmitEvent} event
    */
-  handlerReset(event) {
+  handlerEditorReset(event) {
     const point = this.state;
     const actByDefault = this.notify(point.isDraft ? 'close' : 'delete');
 

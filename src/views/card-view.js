@@ -6,13 +6,13 @@ class CardView extends View {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handlerClick);
+    this.addEventListener('click', this.handlerCardClick);
   }
 
   /**
    * @param {MouseEvent  & {target: Element}} event
    */
-  handlerClick(event) {
+  handlerCardClick(event) {
     if (event.target.closest('.event__rollup-btn')) {
       this.notify('open');
     } else if (event.target.closest('.event__favorite-btn')) {
